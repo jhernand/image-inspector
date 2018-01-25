@@ -4,6 +4,7 @@
 #   all: Build code.
 #   build: Build code.
 #   vendor: Create and populate the `vendor` directory.
+#   image: Build the container image.
 #   test-unit: Run unit tests.
 #   clean: Clean up.
 
@@ -24,6 +25,20 @@ all build: vendor
 #   make vendor
 vendor: Gopkg.toml Gopkg.lock
 	dep ensure -vendor-only -v
+
+# Build the container image.
+#
+# Example:
+#   make image
+image: build
+	sed \
+		-e "s/@OUT_DIR@/$(OUT_DIR)/g" \
+		< Dockerfile.in \
+		> Dockerfile
+	docker build \
+		--tag=openshift/image-inspector \
+		.
+.PHONY: image
 
 # Remove all build artifacts.
 #
@@ -53,12 +68,6 @@ verify: build
 # Example:
 #   make test-unit
 #   make test-unit WHAT=pkg/build GOFLAGS=-v
-test-unit:
+test-unit: vendor
 	GOTEST_FLAGS="$(TESTFLAGS)" hack/test-go.sh $(WHAT) $(TESTS)
 .PHONY: test-unit
-
-# Install travis dependencies
-#
-install-travis:
-	hack/install-tools.sh
-.PHONY: install-travis

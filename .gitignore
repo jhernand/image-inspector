@@ -2,4 +2,5 @@
 *.swp
 /_output
 /vendor
+Dockerfile
 image-inspector

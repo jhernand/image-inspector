@@ -61,9 +61,14 @@ The dependencies of the project are managed using the [dep](https://github.com/g
 tool, so make sure you have it installed in in your `$PATH` before trying to build. The
 `make` command will automatically create and populate the `vendor` directory.
 
-To build the image-inspector you can run this command:
+To build the `image-inspector` binary you can run this command:
 
     $ make
+
+To build the container image with the `image-inspector` binary inside
+use the `image` target:
+
+    $ make image
 
 # Running as a container
 

@@ -1,18 +1,17 @@
 language: go
 
+go_import_path: github.com/openshift/image-inspector
+
 go:
   - 1.7
 
 install:
-  - ./.travis.sh build
+  - echo "${PATH}"
+  - wget --output-document="${HOME}/bin/dep" https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64
+  - chmod +x "${HOME}/bin/dep"
 
 services:
   - docker
 
 script:
-  - ./.travis.sh run
-
-notifications:
-  irc: "chat.freenode.net#openshift-dev"
-
-sudo: false
+  - make verify build test-unit image

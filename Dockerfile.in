@@ -1,0 +1,14 @@
+FROM registry.centos.org/centos/centos:7
+MAINTAINER      Federico Simoncelli <fsimonce@redhat.com>
+
+RUN yum update -y && \
+    yum install -y openscap-scanner && \
+    yum clean all
+
+COPY @OUT_DIR@/local/bin/local/image-inspector /usr/bin
+
+EXPOSE 8080
+
+WORKDIR /var/lib/image-inspector
+
+ENTRYPOINT ["/usr/bin/image-inspector"]
